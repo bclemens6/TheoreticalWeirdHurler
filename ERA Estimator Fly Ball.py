@@ -228,7 +228,7 @@ TotalInnings=0
 #When the inning is over (3 outs are reached),the loop records the number of
 #runs scored (both in a running tally and by bucket) and starts over.
 
-while TotalInnings<1000000:
+while TotalInnings<5000000:
     Outs=0
     Bases= [0,0,0]
     Runs=0
