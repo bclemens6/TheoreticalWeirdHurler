@@ -35,6 +35,9 @@ def OneBaseSingle(VarState,RunCount,OutCount):
     elif VarState == [1,1,0]:
         VarState = [1,1,0]
         RunCount+=1
+    elif VarState == [1,0,1]:
+        VarState = [1,1,0]
+        RunCount+=1
     elif VarState == [1,1,1]:
         VarState = [1,1,0]
         RunCount+=2
@@ -57,6 +60,9 @@ def TwoBaseSingle(VarState,RunCount,OutCount):
     elif VarState == [1,1,0]:
         VarState == [1,0,1]
         RunCount +=1
+    elif VarState == [1,0,1]:
+        VarState == [1,0,1]
+        RunCount+=1
     elif VarState == [1,1,1]:
         VarState = [1,0,1]
         RunCount +=2
@@ -79,6 +85,9 @@ def Double(VarState,RunCount,OutCount):
     elif VarState == [1,1,0]:
         VarState = [0,1,1]
         RunCount +=1
+    elif VarState == [1,0,1]:
+        VarState = [0,1,1]
+        RunCount+=1
     elif VarState == [1,1,1]:
         VarState = [0,1,1]
         RunCount +=2
@@ -102,6 +111,9 @@ def Triple(VarState,RunCount,OutCount):
     elif VarState == [1,1,0]:
         VarState = [0,0,1]
         RunCount +=2
+    elif VarState == [1,0,1]:
+        VarState = [0,0,1]
+        RunCount+=2
     elif VarState == [1,1,1]:
         VarState = [0,0,1]
         RunCount +=3
@@ -126,6 +138,9 @@ def HomeRun(VarState,RunCount,OutCount):
     elif VarState == [1,1,0]:
         VarState = [0,0,0]
         RunCount +=3
+    elif VarState == [1,0,1]:
+        VarState = [0,0,0]
+        RunCount+=3
     elif VarState == [1,1,1]:
         VarState = [0,0,0]
         RunCount +=4
@@ -147,6 +162,8 @@ def Walk(VarState,RunCount,OutCount):
         VarState = [1,1,0]
     elif VarState == [1,1,0]:
         VarState = [1,1,1]
+    elif VarState == [1,0,1]:
+        VarState=[1,1,1]
     elif VarState == [1,1,1]:
         VarState = [1,1,1]
         RunCount+=1
@@ -172,6 +189,9 @@ def Groundout(VarState,RunCount,OutCount):
         VarState = [0,1,0]
     elif VarState == [1,1,0]:
         VarState = [0,1,1]
+    elif VarState == [1,0,1]:
+        VarState = [0,1,0]
+        RunCount+=1
     elif VarState == [1,1,1]:
         VarState = [0,1,1]
         RunCount +=1
@@ -185,6 +205,45 @@ def Groundout(VarState,RunCount,OutCount):
         RunCount +=1
     return VarState,RunCount,OutCount
 
+def GIDP(VarState,RunCount,OutCount):
+    if OutCount == 2:
+        OutCount+=1
+    elif VarState == [0,0,0]:
+        VarState=[0,0,0]
+        OutCount+=1
+    elif VarState == [1,0,0]:
+        VarState=[0,0,0]
+        OutCount+=2
+    elif VarState == [1,1,0]:
+        VarState =[0,0,1]
+        OutCount+=2
+    elif VarState == [1,0,1]:
+        VarState = [0,0,0]
+        if OutCount == 1:
+            OutCount+=2
+        else:
+            OutCount+=2
+            RunCount+=1
+    elif VarState == [1,1,1]:
+        VarState=[0,0,1]
+        if OutCount ==1:
+            OutCount+=2
+        else:
+            OutCount+=2
+            RunCount+=1
+    elif VarState == [0,1,0]:
+        VarState=[0,0,1]
+        OutCount+=1
+    elif VarState == [0,1,1]:
+        VarState = [0,0,1]
+        RunCount+=1
+        OutCount+=1
+    elif VarState == [0,0,1]:
+        VarState = [0,0,0]
+        RunCount+=1
+        OutCount+=1
+    return VarState,RunCount,OutCount
+
 def Flyout(VarState,RunCount,OutCount):
     OutCount+=1
     if OutCount == 3:
@@ -195,6 +254,9 @@ def Flyout(VarState,RunCount,OutCount):
         VarState == [1,0,0]
     elif VarState == [1,1,0]:
         VarState = [1,0,1]
+    elif VarState == [1,0,1]:
+        VarState = [1,0,0]
+        RunCount+=1
     elif VarState == [1,1,1]:
         VarState = [1,0,1]
         RunCount +=1
@@ -257,6 +319,11 @@ while TotalInnings<5000000:
             Outs = Dummy[2]
         elif Action <GroundballRate*.2681989611:
             Dummy=Triple(Bases,Runs,Outs)
+            Bases = Dummy[0]
+            Runs = Dummy[1]
+            Outs = Dummy[2]
+        elif Action <GroundballRate*.4987162883:
+            Dummy=GIDP(Bases,Runs,Outs)
             Bases = Dummy[0]
             Runs = Dummy[1]
             Outs = Dummy[2]
@@ -341,6 +408,7 @@ while TotalInnings<5000000:
         FiveRuns+=1
     else:
         SixPlusRuns+=1
+    #These totals keep track of total runs and iterate the loop.
     TotalRuns+=Runs
     TotalInnings+=1
 
